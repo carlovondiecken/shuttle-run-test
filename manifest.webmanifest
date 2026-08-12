@@ -1,0 +1,9 @@
+{
+  "name": "20 m Shuttle Test",
+  "short_name": "Shuttle 20m",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#edf2f5",
+  "theme_color": "#122033",
+  "icons": []
+}
