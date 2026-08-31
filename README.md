@@ -42,4 +42,4 @@ This is a field estimate, not a laboratory measurement.
 
 ## iPad Audio
 
-Safari requires a user tap before web apps can play sound. Tap `Test beep` once before starting, make sure the iPad volume is up, and check silent/focus modes if the beep is not audible. Voice cues can be set to English or German and use the best available system voice with a lower pitch setting, but the exact voice depends on the voices installed on the iPad. The cue announces speed at the start and only when the speed increases; otherwise it only announces the current level and step.
+Safari requires a user tap before web apps can play sound. Tap `Test beep` once before starting, make sure the iPad volume is up, and check silent/focus modes if the beep is not audible. Voice cues can be set to English or German and use the best available system voice with a lower pitch setting, but the exact voice depends on the voices installed on the iPad. The cue announces speed at the start and on step 1 of each new level; otherwise it only announces the current level and step.

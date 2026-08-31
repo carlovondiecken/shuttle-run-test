@@ -1,4 +1,4 @@
-const CACHE_NAME = "shuttle-20m-v12";
+const CACHE_NAME = "shuttle-20m-v13";
 const ASSETS = [
   "./",
   "./index.html",

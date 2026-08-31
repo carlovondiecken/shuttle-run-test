@@ -15,7 +15,7 @@ const state = {
   audioContext: null,
   audioReady: false,
   voiceReady: false,
-  lastAnnouncedSpeed: null,
+  lastAnnouncedLevelWithSpeed: null,
 };
 
 const BIB_COLORS = ["blue", "red", "green", "yellow"];
@@ -176,8 +176,8 @@ async function startTest() {
   saveFields();
   await unlockAudio();
   unlockVoice();
-  state.lastAnnouncedSpeed = null;
-  playBeep({ announce: true, score: scoreAt(0) });
+  state.lastAnnouncedLevelWithSpeed = null;
+  playBeep({ announce: true, score: scoreAt(0), forceSpeed: true });
   state.running = true;
   state.startedAt = Date.now();
   startTicker();
@@ -196,7 +196,7 @@ function resetTest() {
   state.running = false;
   state.startedAt = null;
   state.elapsedBeforePause = 0;
-  state.lastAnnouncedSpeed = null;
+  state.lastAnnouncedLevelWithSpeed = null;
   stopTicker();
   render();
 }
@@ -256,7 +256,7 @@ function playBeep(options = {}) {
     playTone(context, 780, 0.44, 0.24, 0.55);
     if (options.announce) {
       const score = options.score || scoreAt();
-      const includeSpeed = shouldAnnounceSpeed(score);
+      const includeSpeed = shouldAnnounceSpeed(score, options.forceSpeed);
       window.setTimeout(() => speakCue(score, includeSpeed), 760);
     }
   });
@@ -285,9 +285,11 @@ function flashBeep() {
   board.classList.add("beep-flash");
 }
 
-function shouldAnnounceSpeed(score) {
-  const includeSpeed = state.lastAnnouncedSpeed === null || Math.abs(score.speed - state.lastAnnouncedSpeed) > 0.01;
-  if (includeSpeed) state.lastAnnouncedSpeed = score.speed;
+function shouldAnnounceSpeed(score, forceSpeed = false) {
+  const isFirstStepOfLevel = score.shuttle === 1;
+  const levelAlreadyAnnounced = state.lastAnnouncedLevelWithSpeed === score.level;
+  const includeSpeed = Boolean(forceSpeed || (isFirstStepOfLevel && !levelAlreadyAnnounced));
+  if (includeSpeed) state.lastAnnouncedLevelWithSpeed = score.level;
   return includeSpeed;
 }
 
