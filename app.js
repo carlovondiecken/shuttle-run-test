@@ -5,6 +5,7 @@ const state = {
   teamName: "",
   testDate: today(),
   tester: "",
+  voiceLanguage: "en",
   players: [],
   results: [],
   running: false,
@@ -12,6 +13,8 @@ const state = {
   elapsedBeforePause: 0,
   tickTimer: null,
   audioContext: null,
+  audioReady: false,
+  voiceReady: false,
 };
 
 const BIB_COLORS = ["blue", "red", "green", "yellow"];
@@ -22,6 +25,7 @@ const fields = {
   teamName: $("teamName"),
   testDate: $("testDate"),
   tester: $("tester"),
+  voiceLanguage: $("voiceLanguage"),
 };
 
 const protocol = buildProtocol(21);
@@ -67,6 +71,7 @@ function loadStore() {
     state.teamName = parsed.teamName ?? "";
     state.testDate = parsed.testDate ?? today();
     state.tester = parsed.tester ?? "";
+    state.voiceLanguage = parsed.voiceLanguage ?? "en";
     state.players = Array.isArray(parsed.players) ? parsed.players : [];
     state.results = Array.isArray(parsed.results) ? parsed.results : [];
   } catch {
@@ -79,6 +84,7 @@ function saveStore() {
     teamName: state.teamName,
     testDate: state.testDate,
     tester: state.tester,
+    voiceLanguage: state.voiceLanguage,
     players: state.players,
     results: state.results,
   }));
@@ -88,6 +94,7 @@ function saveFields() {
   state.teamName = fields.teamName.value.trim();
   state.testDate = fields.testDate.value || today();
   state.tester = fields.tester.value.trim();
+  state.voiceLanguage = fields.voiceLanguage.value;
   saveStore();
 }
 
@@ -162,10 +169,13 @@ function removePlayer(id) {
   render();
 }
 
-function startTest() {
+async function startTest() {
   if (!state.players.length) addPlayer();
   if (state.running) return;
   saveFields();
+  await unlockAudio();
+  unlockVoice();
+  playBeep({ announce: true });
   state.running = true;
   state.startedAt = Date.now();
   startTicker();
@@ -195,7 +205,7 @@ function startTicker() {
     const stage = currentStage();
     if (stage.completedShuttles !== lastShuttle) {
       lastShuttle = stage.completedShuttles;
-      playBeep();
+      playBeep({ announce: true });
     }
     renderClock();
   }, 100);
@@ -206,21 +216,108 @@ function stopTicker() {
   state.tickTimer = null;
 }
 
-function playBeep() {
+async function unlockAudio() {
   const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) return;
+  if (!AudioContext) {
+    state.audioReady = false;
+    renderAudioStatus("Audio is not supported in this browser.", "blocked");
+    return false;
+  }
   state.audioContext = state.audioContext || new AudioContext();
-  const context = state.audioContext;
+  if (state.audioContext.state === "suspended") {
+    await state.audioContext.resume();
+  }
+  state.audioReady = state.audioContext.state === "running";
+  renderAudioStatus(
+    state.audioReady ? "Sound enabled. Voice cues enabled when supported." : "Sound is blocked. Tap Test beep again and check iPad volume/silent mode.",
+    state.audioReady ? "ready" : "blocked"
+  );
+  return state.audioReady;
+}
+
+function unlockVoice() {
+  if (!("speechSynthesis" in window)) {
+    state.voiceReady = false;
+    return false;
+  }
+  state.voiceReady = true;
+  return true;
+}
+
+function playBeep(options = {}) {
+  unlockAudio().then((ready) => {
+    flashBeep();
+    if (!ready) return;
+    const context = state.audioContext;
+    playTone(context, 520, 0, 0.42, 0.7);
+    playTone(context, 780, 0.44, 0.24, 0.55);
+    if (options.announce) {
+      window.setTimeout(() => speakCue(scoreAt()), 760);
+    }
+  });
+}
+
+function playTone(context, frequency, delay, duration, volume) {
   const oscillator = context.createOscillator();
   const gain = context.createGain();
-  oscillator.frequency.value = 880;
-  gain.gain.setValueAtTime(0.001, context.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.35, context.currentTime + 0.01);
-  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.18);
+  const start = context.currentTime + delay;
+  const end = start + duration;
+  oscillator.type = "square";
+  oscillator.frequency.setValueAtTime(frequency, start);
+  gain.gain.setValueAtTime(0.001, start);
+  gain.gain.exponentialRampToValueAtTime(volume, start + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.001, end);
   oscillator.connect(gain);
   gain.connect(context.destination);
-  oscillator.start();
-  oscillator.stop(context.currentTime + 0.2);
+  oscillator.start(start);
+  oscillator.stop(end + 0.02);
+}
+
+function flashBeep() {
+  const board = document.querySelector(".test-board");
+  board.classList.remove("beep-flash");
+  void board.offsetWidth;
+  board.classList.add("beep-flash");
+}
+
+function speakCue(score) {
+  if (!unlockVoice()) return;
+  window.speechSynthesis.cancel();
+  const language = state.voiceLanguage || "en";
+  const utterance = new SpeechSynthesisUtterance(announcementText(score, language));
+  utterance.lang = language === "de" ? "de-DE" : "en-GB";
+  const voice = preferredVoice(language);
+  if (voice) utterance.voice = voice;
+  utterance.rate = 1.02;
+  utterance.pitch = 0.55;
+  utterance.volume = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
+function announcementText(score, language) {
+  if (language === "de") {
+    return `Level ${score.level}, Stufe ${score.shuttle}. Geschwindigkeit ${score.speed.toFixed(1)} Kilometer pro Stunde.`;
+  }
+  return `Level ${score.level}, step ${score.shuttle}. Speed ${score.speed.toFixed(1)} kilometers per hour.`;
+}
+
+function preferredVoice(language) {
+  if (!("speechSynthesis" in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  const langPrefix = language === "de" ? "de" : "en";
+  const preferredNames = language === "de"
+    ? ["male", "markus", "klaus", "yannick", "stefan", "daniel"]
+    : ["daniel", "fred", "alex", "tom", "arthur", "male"];
+  return voices.find((voice) =>
+    voice.lang?.toLowerCase().startsWith(langPrefix) &&
+    preferredNames.some((name) => voice.name.toLowerCase().includes(name))
+  ) || voices.find((voice) => voice.lang?.toLowerCase().startsWith(langPrefix)) || voices[0] || null;
+}
+
+function renderAudioStatus(message, status) {
+  const el = $("audioStatus");
+  el.textContent = message;
+  el.className = `audio-status ${status || ""}`.trim();
 }
 
 function recordStop(playerId) {
@@ -239,6 +336,13 @@ function recordStop(playerId) {
     tester: state.tester,
     ...score,
   });
+  const noActivePlayersLeft = activePlayers().length === 0;
+  if (noActivePlayersLeft && state.running) {
+    state.elapsedBeforePause = score.elapsed;
+    state.startedAt = null;
+    state.running = false;
+    stopTicker();
+  }
   saveStore();
   render();
 }
@@ -258,6 +362,7 @@ function renderFields() {
   fields.teamName.value = state.teamName;
   fields.testDate.value = state.testDate;
   fields.tester.value = state.tester;
+  fields.voiceLanguage.value = state.voiceLanguage;
 }
 
 function renderPlayers() {
@@ -357,6 +462,10 @@ function renderResults() {
 function renderControls() {
   $("startBtn").disabled = state.running;
   $("pauseBtn").disabled = !state.running;
+  renderAudioStatus(
+    state.audioReady ? "Sound and voice cues enabled when supported." : "Tap Test beep once before testing to enable sound.",
+    state.audioReady ? "ready" : ""
+  );
 }
 
 function render() {
@@ -373,6 +482,7 @@ function exportData() {
     teamName: state.teamName,
     testDate: state.testDate,
     tester: state.tester,
+    voiceLanguage: state.voiceLanguage,
     players: state.players,
     results: state.results,
   }, null, 2)], { type: "application/json" });
@@ -392,6 +502,7 @@ function importData(file) {
       state.teamName = parsed.teamName ?? "";
       state.testDate = parsed.testDate ?? today();
       state.tester = parsed.tester ?? "";
+      state.voiceLanguage = parsed.voiceLanguage ?? "en";
       state.players = Array.isArray(parsed.players) ? parsed.players : [];
       state.results = Array.isArray(parsed.results) ? parsed.results : [];
       saveStore();
@@ -426,7 +537,10 @@ $("playerNameInput").addEventListener("keydown", (event) => {
 $("startBtn").addEventListener("click", startTest);
 $("pauseBtn").addEventListener("click", pauseTest);
 $("resetBtn").addEventListener("click", resetTest);
-$("beepBtn").addEventListener("click", playBeep);
+$("beepBtn").addEventListener("click", () => {
+  unlockVoice();
+  playBeep({ announce: true });
+});
 $("clearResultsBtn").addEventListener("click", clearResults);
 $("exportBtn").addEventListener("click", exportData);
 $("importInput").addEventListener("change", (event) => event.target.files[0] && importData(event.target.files[0]));

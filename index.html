@@ -21,6 +21,12 @@
           <label>Team <input id="teamName" type="text" placeholder="Team / squad" /></label>
           <label>Test date <input id="testDate" type="date" /></label>
           <label>Tester <input id="tester" type="text" placeholder="Coach / practitioner" /></label>
+          <label>Announcement language
+            <select id="voiceLanguage">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </label>
         </section>
 
         <section class="side-panel">
@@ -67,6 +73,8 @@
             <div><span>VO2max if stopped</span><strong id="currentVo2">--</strong><small>ml/kg/min</small></div>
             <div><span>Next beep</span><strong id="nextBeep">--</strong><small>seconds</small></div>
           </div>
+
+          <div id="audioStatus" class="audio-status">Tap Test beep once before testing to enable sound.</div>
 
           <div class="progress-shell">
             <div id="shuttleProgress" class="progress-bar"></div>

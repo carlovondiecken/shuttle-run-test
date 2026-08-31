@@ -17,6 +17,8 @@ Open the computer's local network URL on the iPad, then use Safari's Add to Home
 - Squad list with player names, bib numbers, bib colors, and optional ages
 - Default squad starts with 20 bib slots: five blue, five red, five green, and five yellow
 - Start, pause, reset, and test-beep controls
+- iPad audio unlock prompt, longer beep, voice cue, and visual beep flash fallback
+- English/German announcement language selector
 - Live level, shuttle, elapsed time, distance, MAV estimate, pace, and VO2max estimate
 - Tap each player when they stop to record their result
 - Results table sorted by distance
@@ -37,3 +39,7 @@ VO2max is estimated from final speed using:
 `VO2max = 6 * speed(km/h) - 24.4`
 
 This is a field estimate, not a laboratory measurement.
+
+## iPad Audio
+
+Safari requires a user tap before web apps can play sound. Tap `Test beep` once before starting, make sure the iPad volume is up, and check silent/focus modes if the beep is not audible. Voice cues can be set to English or German and use the best available system voice with a lower pitch setting, but the exact voice depends on the voices installed on the iPad.

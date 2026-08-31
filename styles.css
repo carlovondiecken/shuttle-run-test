@@ -246,6 +246,39 @@ label {
   background: #e5edf1;
 }
 
+.audio-status {
+  min-height: 38px;
+  border: 1px solid #d7e0e7;
+  border-radius: 8px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  color: var(--muted);
+  background: #f7fafb;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.audio-status.ready {
+  color: #176146;
+  background: #e9f7ef;
+  border-color: #b8dfc7;
+}
+
+.audio-status.blocked {
+  color: #8a4e10;
+  background: #fff5df;
+  border-color: #efd28e;
+}
+
+.beep-flash {
+  animation: beepFlash 0.22s ease-out;
+}
+
+@keyframes beepFlash {
+  0% { box-shadow: 0 0 0 0 rgba(12, 129, 123, 0.75); }
+  100% { box-shadow: 0 0 0 18px rgba(12, 129, 123, 0); }
+}
+
 .progress-bar {
   width: 0%;
   height: 100%;
