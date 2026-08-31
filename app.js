@@ -15,6 +15,7 @@ const state = {
   audioContext: null,
   audioReady: false,
   voiceReady: false,
+  lastAnnouncedSpeed: null,
 };
 
 const BIB_COLORS = ["blue", "red", "green", "yellow"];
@@ -175,7 +176,8 @@ async function startTest() {
   saveFields();
   await unlockAudio();
   unlockVoice();
-  playBeep({ announce: true });
+  state.lastAnnouncedSpeed = null;
+  playBeep({ announce: true, score: scoreAt(0) });
   state.running = true;
   state.startedAt = Date.now();
   startTicker();
@@ -194,6 +196,7 @@ function resetTest() {
   state.running = false;
   state.startedAt = null;
   state.elapsedBeforePause = 0;
+  state.lastAnnouncedSpeed = null;
   stopTicker();
   render();
 }
@@ -205,7 +208,7 @@ function startTicker() {
     const stage = currentStage();
     if (stage.completedShuttles !== lastShuttle) {
       lastShuttle = stage.completedShuttles;
-      playBeep({ announce: true });
+      playBeep({ announce: true, score: scoreAt(stage.start) });
     }
     renderClock();
   }, 100);
@@ -252,7 +255,9 @@ function playBeep(options = {}) {
     playTone(context, 520, 0, 0.42, 0.7);
     playTone(context, 780, 0.44, 0.24, 0.55);
     if (options.announce) {
-      window.setTimeout(() => speakCue(scoreAt()), 760);
+      const score = options.score || scoreAt();
+      const includeSpeed = shouldAnnounceSpeed(score);
+      window.setTimeout(() => speakCue(score, includeSpeed), 760);
     }
   });
 }
@@ -280,25 +285,38 @@ function flashBeep() {
   board.classList.add("beep-flash");
 }
 
-function speakCue(score) {
+function shouldAnnounceSpeed(score) {
+  const includeSpeed = state.lastAnnouncedSpeed === null || Math.abs(score.speed - state.lastAnnouncedSpeed) > 0.01;
+  if (includeSpeed) state.lastAnnouncedSpeed = score.speed;
+  return includeSpeed;
+}
+
+function speakCue(score, includeSpeed) {
   if (!unlockVoice()) return;
   window.speechSynthesis.cancel();
   const language = state.voiceLanguage || "en";
-  const utterance = new SpeechSynthesisUtterance(announcementText(score, language));
+  const utterance = new SpeechSynthesisUtterance(announcementText(score, language, includeSpeed));
   utterance.lang = language === "de" ? "de-DE" : "en-GB";
   const voice = preferredVoice(language);
   if (voice) utterance.voice = voice;
-  utterance.rate = 1.02;
-  utterance.pitch = 0.55;
+  utterance.rate = language === "de" ? 0.92 : 1.0;
+  utterance.pitch = language === "de" ? 0.48 : 0.55;
   utterance.volume = 1;
   window.speechSynthesis.speak(utterance);
 }
 
-function announcementText(score, language) {
+function announcementText(score, language, includeSpeed) {
   if (language === "de") {
-    return `Level ${score.level}, Stufe ${score.shuttle}. Geschwindigkeit ${score.speed.toFixed(1)} Kilometer pro Stunde.`;
+    const base = `Level ${score.level}, Stufe ${score.shuttle}`;
+    return includeSpeed ? `${base}, ${formatSpeed(score.speed, "de")}` : base;
   }
-  return `Level ${score.level}, step ${score.shuttle}. Speed ${score.speed.toFixed(1)} kilometers per hour.`;
+  const base = `Level ${score.level}, step ${score.shuttle}`;
+  return includeSpeed ? `${base}, ${formatSpeed(score.speed, "en")}` : base;
+}
+
+function formatSpeed(speed, language) {
+  const value = speed.toFixed(1);
+  return language === "de" ? `${value.replace(".", ",")} km/h` : `${value} km/h`;
 }
 
 function preferredVoice(language) {
