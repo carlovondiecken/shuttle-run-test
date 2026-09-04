@@ -45,4 +45,4 @@ This is a field estimate, not a laboratory measurement.
 
 Safari requires a user tap before web apps can play sound. Tap `Test beep` once before starting, make sure the iPad volume is up, and check silent/focus modes if the beep is not audible. Voice cues can be set to English or German and use the best available system voice with a lower pitch setting, but the exact voice depends on the voices installed on the iPad. The visible cue preview shows the exact phrase that will be spoken. The cue announces speed at the start and on step 1 of each new level; otherwise it only announces the current level and step.
 
-`voice-script-de.txt` contains every German phrase and target filename needed to generate pre-recorded MP3 cues.
+`voice-script-de.txt` contains the German recording script with one cue per paragraph. `voice-map-de.tsv` keeps the matching target MP3 filenames for splitting one long recording into separate files.
