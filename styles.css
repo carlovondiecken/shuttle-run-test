@@ -258,6 +258,14 @@ label {
   font-weight: 700;
 }
 
+.cue-preview {
+  min-height: 34px;
+  margin-top: 8px;
+  color: #17212f;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .audio-status.ready {
   color: #176146;
   background: #e9f7ef;

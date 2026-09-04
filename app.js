@@ -15,7 +15,7 @@ const state = {
   audioContext: null,
   audioReady: false,
   voiceReady: false,
-  lastAnnouncedLevelWithSpeed: null,
+  announcedSpeedLevels: new Set(),
 };
 
 const BIB_COLORS = ["blue", "red", "green", "yellow"];
@@ -176,8 +176,8 @@ async function startTest() {
   saveFields();
   await unlockAudio();
   unlockVoice();
-  state.lastAnnouncedLevelWithSpeed = null;
-  playBeep({ announce: true, score: scoreAt(0), forceSpeed: true });
+  state.announcedSpeedLevels.clear();
+  playBeep({ cue: buildCue(scoreAt(0), true) });
   state.running = true;
   state.startedAt = Date.now();
   startTicker();
@@ -196,7 +196,7 @@ function resetTest() {
   state.running = false;
   state.startedAt = null;
   state.elapsedBeforePause = 0;
-  state.lastAnnouncedLevelWithSpeed = null;
+  state.announcedSpeedLevels.clear();
   stopTicker();
   render();
 }
@@ -208,7 +208,8 @@ function startTicker() {
     const stage = currentStage();
     if (stage.completedShuttles !== lastShuttle) {
       lastShuttle = stage.completedShuttles;
-      playBeep({ announce: true, score: scoreAt(stage.start) });
+      const score = scoreAt(stage.start);
+      playBeep({ cue: buildCue(score, false) });
     }
     renderClock();
   }, 100);
@@ -254,10 +255,9 @@ function playBeep(options = {}) {
     const context = state.audioContext;
     playTone(context, 520, 0, 0.42, 0.7);
     playTone(context, 780, 0.44, 0.24, 0.55);
-    if (options.announce) {
-      const score = options.score || scoreAt();
-      const includeSpeed = shouldAnnounceSpeed(score, options.forceSpeed);
-      window.setTimeout(() => speakCue(score, includeSpeed), 760);
+    if (options.cue) {
+      $("cuePreview").textContent = `Next cue: ${options.cue.text}`;
+      window.setTimeout(() => speakCue(options.cue), 760);
     }
   });
 }
@@ -285,24 +285,25 @@ function flashBeep() {
   board.classList.add("beep-flash");
 }
 
-function shouldAnnounceSpeed(score, forceSpeed = false) {
-  const isFirstStepOfLevel = score.shuttle === 1;
-  const levelAlreadyAnnounced = state.lastAnnouncedLevelWithSpeed === score.level;
-  const includeSpeed = Boolean(forceSpeed || (isFirstStepOfLevel && !levelAlreadyAnnounced));
-  if (includeSpeed) state.lastAnnouncedLevelWithSpeed = score.level;
-  return includeSpeed;
+function buildCue(score, forceSpeed = false) {
+  const language = state.voiceLanguage || "en";
+  const includeSpeed = Boolean(forceSpeed || (score.shuttle === 1 && !state.announcedSpeedLevels.has(score.level)));
+  if (includeSpeed) state.announcedSpeedLevels.add(score.level);
+  return {
+    language,
+    text: announcementText(score, language, includeSpeed),
+  };
 }
 
-function speakCue(score, includeSpeed) {
+function speakCue(cue) {
   if (!unlockVoice()) return;
   window.speechSynthesis.cancel();
-  const language = state.voiceLanguage || "en";
-  const utterance = new SpeechSynthesisUtterance(announcementText(score, language, includeSpeed));
-  utterance.lang = language === "de" ? "de-DE" : "en-GB";
-  const voice = preferredVoice(language);
+  const utterance = new SpeechSynthesisUtterance(cue.text);
+  utterance.lang = cue.language === "de" ? "de-DE" : "en-GB";
+  const voice = preferredVoice(cue.language);
   if (voice) utterance.voice = voice;
-  utterance.rate = language === "de" ? 0.92 : 1.0;
-  utterance.pitch = language === "de" ? 0.48 : 0.55;
+  utterance.rate = cue.language === "de" ? 0.92 : 1.0;
+  utterance.pitch = cue.language === "de" ? 0.48 : 0.55;
   utterance.volume = 1;
   window.speechSynthesis.speak(utterance);
 }
@@ -435,6 +436,14 @@ function renderClock() {
   $("currentVo2").textContent = round(score.vo2, 1);
   $("nextBeep").textContent = round(score.nextBeep, 1);
   $("shuttleProgress").style.width = `${score.progress}%`;
+  const preview = buildPreviewCue(score);
+  $("cuePreview").textContent = `Next cue: ${preview}`;
+}
+
+function buildPreviewCue(score) {
+  const language = state.voiceLanguage || "en";
+  const includeSpeed = score.shuttle === 1 && !state.announcedSpeedLevels.has(score.level);
+  return announcementText(score, language, includeSpeed);
 }
 
 function renderLiveGrid() {
@@ -559,7 +568,7 @@ $("pauseBtn").addEventListener("click", pauseTest);
 $("resetBtn").addEventListener("click", resetTest);
 $("beepBtn").addEventListener("click", () => {
   unlockVoice();
-  playBeep({ announce: true });
+  playBeep({ cue: buildCue(scoreAt(), true) });
 });
 $("clearResultsBtn").addEventListener("click", clearResults);
 $("exportBtn").addEventListener("click", exportData);
