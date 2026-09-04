@@ -1,0 +1,241 @@
+﻿# German 20 m shuttle voice script
+
+Generate one MP3 per line using the filename in the first column.
+Format: filename<TAB>spoken text
+
+audio/de/level-01-step-01.mp3	Level 1, Stufe 1, 8,5 km/h
+audio/de/level-01-step-02.mp3	Level 1, Stufe 2
+audio/de/level-01-step-03.mp3	Level 1, Stufe 3
+audio/de/level-01-step-04.mp3	Level 1, Stufe 4
+audio/de/level-01-step-05.mp3	Level 1, Stufe 5
+audio/de/level-01-step-06.mp3	Level 1, Stufe 6
+audio/de/level-01-step-07.mp3	Level 1, Stufe 7
+audio/de/level-02-step-01.mp3	Level 2, Stufe 1, 9,0 km/h
+audio/de/level-02-step-02.mp3	Level 2, Stufe 2
+audio/de/level-02-step-03.mp3	Level 2, Stufe 3
+audio/de/level-02-step-04.mp3	Level 2, Stufe 4
+audio/de/level-02-step-05.mp3	Level 2, Stufe 5
+audio/de/level-02-step-06.mp3	Level 2, Stufe 6
+audio/de/level-02-step-07.mp3	Level 2, Stufe 7
+audio/de/level-02-step-08.mp3	Level 2, Stufe 8
+audio/de/level-03-step-01.mp3	Level 3, Stufe 1, 9,5 km/h
+audio/de/level-03-step-02.mp3	Level 3, Stufe 2
+audio/de/level-03-step-03.mp3	Level 3, Stufe 3
+audio/de/level-03-step-04.mp3	Level 3, Stufe 4
+audio/de/level-03-step-05.mp3	Level 3, Stufe 5
+audio/de/level-03-step-06.mp3	Level 3, Stufe 6
+audio/de/level-03-step-07.mp3	Level 3, Stufe 7
+audio/de/level-03-step-08.mp3	Level 3, Stufe 8
+audio/de/level-04-step-01.mp3	Level 4, Stufe 1, 10,0 km/h
+audio/de/level-04-step-02.mp3	Level 4, Stufe 2
+audio/de/level-04-step-03.mp3	Level 4, Stufe 3
+audio/de/level-04-step-04.mp3	Level 4, Stufe 4
+audio/de/level-04-step-05.mp3	Level 4, Stufe 5
+audio/de/level-04-step-06.mp3	Level 4, Stufe 6
+audio/de/level-04-step-07.mp3	Level 4, Stufe 7
+audio/de/level-04-step-08.mp3	Level 4, Stufe 8
+audio/de/level-05-step-01.mp3	Level 5, Stufe 1, 10,5 km/h
+audio/de/level-05-step-02.mp3	Level 5, Stufe 2
+audio/de/level-05-step-03.mp3	Level 5, Stufe 3
+audio/de/level-05-step-04.mp3	Level 5, Stufe 4
+audio/de/level-05-step-05.mp3	Level 5, Stufe 5
+audio/de/level-05-step-06.mp3	Level 5, Stufe 6
+audio/de/level-05-step-07.mp3	Level 5, Stufe 7
+audio/de/level-05-step-08.mp3	Level 5, Stufe 8
+audio/de/level-05-step-09.mp3	Level 5, Stufe 9
+audio/de/level-06-step-01.mp3	Level 6, Stufe 1, 11,0 km/h
+audio/de/level-06-step-02.mp3	Level 6, Stufe 2
+audio/de/level-06-step-03.mp3	Level 6, Stufe 3
+audio/de/level-06-step-04.mp3	Level 6, Stufe 4
+audio/de/level-06-step-05.mp3	Level 6, Stufe 5
+audio/de/level-06-step-06.mp3	Level 6, Stufe 6
+audio/de/level-06-step-07.mp3	Level 6, Stufe 7
+audio/de/level-06-step-08.mp3	Level 6, Stufe 8
+audio/de/level-06-step-09.mp3	Level 6, Stufe 9
+audio/de/level-07-step-01.mp3	Level 7, Stufe 1, 11,5 km/h
+audio/de/level-07-step-02.mp3	Level 7, Stufe 2
+audio/de/level-07-step-03.mp3	Level 7, Stufe 3
+audio/de/level-07-step-04.mp3	Level 7, Stufe 4
+audio/de/level-07-step-05.mp3	Level 7, Stufe 5
+audio/de/level-07-step-06.mp3	Level 7, Stufe 6
+audio/de/level-07-step-07.mp3	Level 7, Stufe 7
+audio/de/level-07-step-08.mp3	Level 7, Stufe 8
+audio/de/level-07-step-09.mp3	Level 7, Stufe 9
+audio/de/level-07-step-10.mp3	Level 7, Stufe 10
+audio/de/level-08-step-01.mp3	Level 8, Stufe 1, 12,0 km/h
+audio/de/level-08-step-02.mp3	Level 8, Stufe 2
+audio/de/level-08-step-03.mp3	Level 8, Stufe 3
+audio/de/level-08-step-04.mp3	Level 8, Stufe 4
+audio/de/level-08-step-05.mp3	Level 8, Stufe 5
+audio/de/level-08-step-06.mp3	Level 8, Stufe 6
+audio/de/level-08-step-07.mp3	Level 8, Stufe 7
+audio/de/level-08-step-08.mp3	Level 8, Stufe 8
+audio/de/level-08-step-09.mp3	Level 8, Stufe 9
+audio/de/level-08-step-10.mp3	Level 8, Stufe 10
+audio/de/level-09-step-01.mp3	Level 9, Stufe 1, 12,5 km/h
+audio/de/level-09-step-02.mp3	Level 9, Stufe 2
+audio/de/level-09-step-03.mp3	Level 9, Stufe 3
+audio/de/level-09-step-04.mp3	Level 9, Stufe 4
+audio/de/level-09-step-05.mp3	Level 9, Stufe 5
+audio/de/level-09-step-06.mp3	Level 9, Stufe 6
+audio/de/level-09-step-07.mp3	Level 9, Stufe 7
+audio/de/level-09-step-08.mp3	Level 9, Stufe 8
+audio/de/level-09-step-09.mp3	Level 9, Stufe 9
+audio/de/level-09-step-10.mp3	Level 9, Stufe 10
+audio/de/level-10-step-01.mp3	Level 10, Stufe 1, 13,0 km/h
+audio/de/level-10-step-02.mp3	Level 10, Stufe 2
+audio/de/level-10-step-03.mp3	Level 10, Stufe 3
+audio/de/level-10-step-04.mp3	Level 10, Stufe 4
+audio/de/level-10-step-05.mp3	Level 10, Stufe 5
+audio/de/level-10-step-06.mp3	Level 10, Stufe 6
+audio/de/level-10-step-07.mp3	Level 10, Stufe 7
+audio/de/level-10-step-08.mp3	Level 10, Stufe 8
+audio/de/level-10-step-09.mp3	Level 10, Stufe 9
+audio/de/level-10-step-10.mp3	Level 10, Stufe 10
+audio/de/level-10-step-11.mp3	Level 10, Stufe 11
+audio/de/level-11-step-01.mp3	Level 11, Stufe 1, 13,5 km/h
+audio/de/level-11-step-02.mp3	Level 11, Stufe 2
+audio/de/level-11-step-03.mp3	Level 11, Stufe 3
+audio/de/level-11-step-04.mp3	Level 11, Stufe 4
+audio/de/level-11-step-05.mp3	Level 11, Stufe 5
+audio/de/level-11-step-06.mp3	Level 11, Stufe 6
+audio/de/level-11-step-07.mp3	Level 11, Stufe 7
+audio/de/level-11-step-08.mp3	Level 11, Stufe 8
+audio/de/level-11-step-09.mp3	Level 11, Stufe 9
+audio/de/level-11-step-10.mp3	Level 11, Stufe 10
+audio/de/level-11-step-11.mp3	Level 11, Stufe 11
+audio/de/level-12-step-01.mp3	Level 12, Stufe 1, 14,0 km/h
+audio/de/level-12-step-02.mp3	Level 12, Stufe 2
+audio/de/level-12-step-03.mp3	Level 12, Stufe 3
+audio/de/level-12-step-04.mp3	Level 12, Stufe 4
+audio/de/level-12-step-05.mp3	Level 12, Stufe 5
+audio/de/level-12-step-06.mp3	Level 12, Stufe 6
+audio/de/level-12-step-07.mp3	Level 12, Stufe 7
+audio/de/level-12-step-08.mp3	Level 12, Stufe 8
+audio/de/level-12-step-09.mp3	Level 12, Stufe 9
+audio/de/level-12-step-10.mp3	Level 12, Stufe 10
+audio/de/level-12-step-11.mp3	Level 12, Stufe 11
+audio/de/level-12-step-12.mp3	Level 12, Stufe 12
+audio/de/level-13-step-01.mp3	Level 13, Stufe 1, 14,5 km/h
+audio/de/level-13-step-02.mp3	Level 13, Stufe 2
+audio/de/level-13-step-03.mp3	Level 13, Stufe 3
+audio/de/level-13-step-04.mp3	Level 13, Stufe 4
+audio/de/level-13-step-05.mp3	Level 13, Stufe 5
+audio/de/level-13-step-06.mp3	Level 13, Stufe 6
+audio/de/level-13-step-07.mp3	Level 13, Stufe 7
+audio/de/level-13-step-08.mp3	Level 13, Stufe 8
+audio/de/level-13-step-09.mp3	Level 13, Stufe 9
+audio/de/level-13-step-10.mp3	Level 13, Stufe 10
+audio/de/level-13-step-11.mp3	Level 13, Stufe 11
+audio/de/level-13-step-12.mp3	Level 13, Stufe 12
+audio/de/level-14-step-01.mp3	Level 14, Stufe 1, 15,0 km/h
+audio/de/level-14-step-02.mp3	Level 14, Stufe 2
+audio/de/level-14-step-03.mp3	Level 14, Stufe 3
+audio/de/level-14-step-04.mp3	Level 14, Stufe 4
+audio/de/level-14-step-05.mp3	Level 14, Stufe 5
+audio/de/level-14-step-06.mp3	Level 14, Stufe 6
+audio/de/level-14-step-07.mp3	Level 14, Stufe 7
+audio/de/level-14-step-08.mp3	Level 14, Stufe 8
+audio/de/level-14-step-09.mp3	Level 14, Stufe 9
+audio/de/level-14-step-10.mp3	Level 14, Stufe 10
+audio/de/level-14-step-11.mp3	Level 14, Stufe 11
+audio/de/level-14-step-12.mp3	Level 14, Stufe 12
+audio/de/level-15-step-01.mp3	Level 15, Stufe 1, 15,5 km/h
+audio/de/level-15-step-02.mp3	Level 15, Stufe 2
+audio/de/level-15-step-03.mp3	Level 15, Stufe 3
+audio/de/level-15-step-04.mp3	Level 15, Stufe 4
+audio/de/level-15-step-05.mp3	Level 15, Stufe 5
+audio/de/level-15-step-06.mp3	Level 15, Stufe 6
+audio/de/level-15-step-07.mp3	Level 15, Stufe 7
+audio/de/level-15-step-08.mp3	Level 15, Stufe 8
+audio/de/level-15-step-09.mp3	Level 15, Stufe 9
+audio/de/level-15-step-10.mp3	Level 15, Stufe 10
+audio/de/level-15-step-11.mp3	Level 15, Stufe 11
+audio/de/level-15-step-12.mp3	Level 15, Stufe 12
+audio/de/level-15-step-13.mp3	Level 15, Stufe 13
+audio/de/level-16-step-01.mp3	Level 16, Stufe 1, 16,0 km/h
+audio/de/level-16-step-02.mp3	Level 16, Stufe 2
+audio/de/level-16-step-03.mp3	Level 16, Stufe 3
+audio/de/level-16-step-04.mp3	Level 16, Stufe 4
+audio/de/level-16-step-05.mp3	Level 16, Stufe 5
+audio/de/level-16-step-06.mp3	Level 16, Stufe 6
+audio/de/level-16-step-07.mp3	Level 16, Stufe 7
+audio/de/level-16-step-08.mp3	Level 16, Stufe 8
+audio/de/level-16-step-09.mp3	Level 16, Stufe 9
+audio/de/level-16-step-10.mp3	Level 16, Stufe 10
+audio/de/level-16-step-11.mp3	Level 16, Stufe 11
+audio/de/level-16-step-12.mp3	Level 16, Stufe 12
+audio/de/level-16-step-13.mp3	Level 16, Stufe 13
+audio/de/level-17-step-01.mp3	Level 17, Stufe 1, 16,5 km/h
+audio/de/level-17-step-02.mp3	Level 17, Stufe 2
+audio/de/level-17-step-03.mp3	Level 17, Stufe 3
+audio/de/level-17-step-04.mp3	Level 17, Stufe 4
+audio/de/level-17-step-05.mp3	Level 17, Stufe 5
+audio/de/level-17-step-06.mp3	Level 17, Stufe 6
+audio/de/level-17-step-07.mp3	Level 17, Stufe 7
+audio/de/level-17-step-08.mp3	Level 17, Stufe 8
+audio/de/level-17-step-09.mp3	Level 17, Stufe 9
+audio/de/level-17-step-10.mp3	Level 17, Stufe 10
+audio/de/level-17-step-11.mp3	Level 17, Stufe 11
+audio/de/level-17-step-12.mp3	Level 17, Stufe 12
+audio/de/level-17-step-13.mp3	Level 17, Stufe 13
+audio/de/level-17-step-14.mp3	Level 17, Stufe 14
+audio/de/level-18-step-01.mp3	Level 18, Stufe 1, 17,0 km/h
+audio/de/level-18-step-02.mp3	Level 18, Stufe 2
+audio/de/level-18-step-03.mp3	Level 18, Stufe 3
+audio/de/level-18-step-04.mp3	Level 18, Stufe 4
+audio/de/level-18-step-05.mp3	Level 18, Stufe 5
+audio/de/level-18-step-06.mp3	Level 18, Stufe 6
+audio/de/level-18-step-07.mp3	Level 18, Stufe 7
+audio/de/level-18-step-08.mp3	Level 18, Stufe 8
+audio/de/level-18-step-09.mp3	Level 18, Stufe 9
+audio/de/level-18-step-10.mp3	Level 18, Stufe 10
+audio/de/level-18-step-11.mp3	Level 18, Stufe 11
+audio/de/level-18-step-12.mp3	Level 18, Stufe 12
+audio/de/level-18-step-13.mp3	Level 18, Stufe 13
+audio/de/level-18-step-14.mp3	Level 18, Stufe 14
+audio/de/level-19-step-01.mp3	Level 19, Stufe 1, 17,5 km/h
+audio/de/level-19-step-02.mp3	Level 19, Stufe 2
+audio/de/level-19-step-03.mp3	Level 19, Stufe 3
+audio/de/level-19-step-04.mp3	Level 19, Stufe 4
+audio/de/level-19-step-05.mp3	Level 19, Stufe 5
+audio/de/level-19-step-06.mp3	Level 19, Stufe 6
+audio/de/level-19-step-07.mp3	Level 19, Stufe 7
+audio/de/level-19-step-08.mp3	Level 19, Stufe 8
+audio/de/level-19-step-09.mp3	Level 19, Stufe 9
+audio/de/level-19-step-10.mp3	Level 19, Stufe 10
+audio/de/level-19-step-11.mp3	Level 19, Stufe 11
+audio/de/level-19-step-12.mp3	Level 19, Stufe 12
+audio/de/level-19-step-13.mp3	Level 19, Stufe 13
+audio/de/level-19-step-14.mp3	Level 19, Stufe 14
+audio/de/level-19-step-15.mp3	Level 19, Stufe 15
+audio/de/level-20-step-01.mp3	Level 20, Stufe 1, 18,0 km/h
+audio/de/level-20-step-02.mp3	Level 20, Stufe 2
+audio/de/level-20-step-03.mp3	Level 20, Stufe 3
+audio/de/level-20-step-04.mp3	Level 20, Stufe 4
+audio/de/level-20-step-05.mp3	Level 20, Stufe 5
+audio/de/level-20-step-06.mp3	Level 20, Stufe 6
+audio/de/level-20-step-07.mp3	Level 20, Stufe 7
+audio/de/level-20-step-08.mp3	Level 20, Stufe 8
+audio/de/level-20-step-09.mp3	Level 20, Stufe 9
+audio/de/level-20-step-10.mp3	Level 20, Stufe 10
+audio/de/level-20-step-11.mp3	Level 20, Stufe 11
+audio/de/level-20-step-12.mp3	Level 20, Stufe 12
+audio/de/level-20-step-13.mp3	Level 20, Stufe 13
+audio/de/level-20-step-14.mp3	Level 20, Stufe 14
+audio/de/level-20-step-15.mp3	Level 20, Stufe 15
+audio/de/level-21-step-01.mp3	Level 21, Stufe 1, 18,5 km/h
+audio/de/level-21-step-02.mp3	Level 21, Stufe 2
+audio/de/level-21-step-03.mp3	Level 21, Stufe 3
+audio/de/level-21-step-04.mp3	Level 21, Stufe 4
+audio/de/level-21-step-05.mp3	Level 21, Stufe 5
+audio/de/level-21-step-06.mp3	Level 21, Stufe 6
+audio/de/level-21-step-07.mp3	Level 21, Stufe 7
+audio/de/level-21-step-08.mp3	Level 21, Stufe 8
+audio/de/level-21-step-09.mp3	Level 21, Stufe 9
+audio/de/level-21-step-10.mp3	Level 21, Stufe 10
+audio/de/level-21-step-11.mp3	Level 21, Stufe 11
+audio/de/level-21-step-12.mp3	Level 21, Stufe 12
+audio/de/level-21-step-13.mp3	Level 21, Stufe 13
+audio/de/level-21-step-14.mp3	Level 21, Stufe 14
+audio/de/level-21-step-15.mp3	Level 21, Stufe 15
