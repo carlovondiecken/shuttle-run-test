@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#122033" />
+    <title>20 m Shuttle Test</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <p class="eyebrow">Football squad testing</p>
+          <h1>20 m Shuttle</h1>
+        </div>
+
+        <section class="side-panel">
+          <h2>Session</h2>
+          <label>Team <input id="teamName" type="text" placeholder="Team / squad" /></label>
+          <label>Test date <input id="testDate" type="date" /></label>
+          <label>Tester <input id="tester" type="text" placeholder="Coach / practitioner" /></label>
+          <label>Announcement language
+            <select id="voiceLanguage">
+              <option value="en">English</option>
+              <option value="de">Deutsch</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="side-panel">
+          <div class="panel-head">
+            <h2>Players</h2>
+            <button id="addPlayerBtn" type="button" class="icon-btn" aria-label="Add player" title="Add player">+</button>
+          </div>
+          <div class="quick-add">
+            <input id="playerNameInput" type="text" placeholder="Player name" />
+            <button id="quickAddBtn" type="button">Add</button>
+          </div>
+          <div id="playerList" class="player-list"></div>
+        </section>
+
+        <div class="data-actions">
+          <button id="exportBtn" type="button">Export</button>
+          <label class="file-action">
+            Import
+            <input id="importInput" type="file" accept="application/json,.json" />
+          </label>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <section class="test-board">
+          <div class="clock-row">
+            <div>
+              <p class="eyebrow">Elapsed</p>
+              <strong id="elapsedTime">00:00</strong>
+            </div>
+            <div>
+              <p class="eyebrow">Level / shuttle</p>
+              <strong id="levelShuttle">1 / 1</strong>
+            </div>
+            <div>
+              <p class="eyebrow">Distance</p>
+              <strong id="currentDistance">0 m</strong>
+            </div>
+          </div>
+
+          <div class="metric-strip">
+            <div><span>MAV if stopped</span><strong id="currentSpeed">8.5</strong><small>km/h</small></div>
+            <div><span>Pace</span><strong id="currentPace">7:04</strong><small>min/km</small></div>
+            <div><span>VO2max if stopped</span><strong id="currentVo2">--</strong><small>ml/kg/min</small></div>
+            <div><span>Next beep</span><strong id="nextBeep">--</strong><small>seconds</small></div>
+          </div>
+
+          <div id="audioStatus" class="audio-status">Tap Test beep once before testing to enable sound.</div>
+          <div id="cuePreview" class="cue-preview">Next cue: --</div>
+
+          <div class="progress-shell">
+            <div id="shuttleProgress" class="progress-bar"></div>
+          </div>
+
+          <div class="controls">
+            <button id="startBtn" type="button" class="primary">Start</button>
+            <button id="pauseBtn" type="button">Pause</button>
+            <button id="beepBtn" type="button">Test beep</button>
+            <button id="resetBtn" type="button" class="danger">Reset</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Live Squad</h2>
+              <p>Tap a player when they stop. The app records their current score.</p>
+            </div>
+            <span id="activeCount" class="pill">0 active</span>
+          </div>
+          <div id="liveGrid" class="live-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h2>Results</h2>
+              <p>Sorted by distance covered.</p>
+            </div>
+            <button id="clearResultsBtn" type="button">Clear results</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Bib</th>
+                  <th>Player</th>
+                  <th>Level</th>
+                  <th>Distance</th>
+                  <th>MAV</th>
+                  <th>Pace</th>
+                  <th>VO2max</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="playerTemplate">
+      <div class="player-row">
+        <input class="player-bib" type="number" min="1" placeholder="#" />
+        <select class="player-color">
+          <option value="blue">Blue</option>
+          <option value="red">Red</option>
+          <option value="green">Green</option>
+          <option value="yellow">Yellow</option>
+        </select>
+        <input class="player-name" type="text" />
+        <input class="player-age" type="number" min="5" max="80" placeholder="Age" />
+        <button class="remove-player icon-btn danger" type="button" aria-label="Remove player" title="Remove player">x</button>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+      }
+    </script>
+  </body>
+</html>
